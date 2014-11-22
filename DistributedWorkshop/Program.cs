@@ -11,27 +11,40 @@ namespace DistributedWorkshop
     {
         static void Main(string[] args)
         {
-            using (NetMQContext ctx = NetMQContext.Create())
-            {
-                using (var server = ctx.CreateResponseSocket())
-                {
-                    server.Bind("tcp://192.168.43.121:5556");
+			RunServer();
+			//RunClient ("tcp://192.168.43.45:5556");
+		}
 
-                    using (var client = ctx.CreateRequestSocket())
-                    {
-                        client.Connect("tcp://192.168.43.23:5556");
-                        client.Send("Hello");
+		static void RunClient(string serverUri)
+		{
+			using (NetMQContext ctx = NetMQContext.Create())
+			{
+				using (var client = ctx.CreateRequestSocket()) 
+				{
+					client.Connect(serverUri);
+					while (true) 
+					{
+						client.Send ("Hello");
+					}
+				}
+			}
+		}
 
-                        string m1 = server.ReceiveString();
-                        Console.WriteLine("From Client: {0}", m1);
-                        server.Send("Hi Back");
+		static void RunServer()
+		{
+			using (NetMQContext ctx = NetMQContext.Create()) 
+			{
+				using (var server = ctx.CreateResponseSocket()) 
+				{
+					server.Bind("tcp://192.168.43.45:5556");
 
-                        string m2 = client.ReceiveString();
-                        Console.WriteLine("From Server: {0}", m2);
-                        Console.ReadLine();
-                    }
-                }
-            }
-        }
+					while (true) 
+					{
+						var message = server.ReceiveString();
+						Console.WriteLine(message);
+					}
+				}
+			}
+		}
     }
 }
