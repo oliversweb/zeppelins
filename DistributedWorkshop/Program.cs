@@ -14,10 +14,11 @@ namespace DistributedWorkshop
 
         static void Main(string[] args)
         {
-			Metric.Config.WithHttpEndpoint ("http://localhost:12345/");
+			Metric.Config.WithHttpEndpoint ("http://localhost:12345" +
+				"/");
 
 			//RunServer();
-			RunClient ("tcp://10.20.2.226:5556");
+			RunClient ("tcp://192.168.1.24:5556");
 		}
 
 		static void RunClient(string serverUri)
@@ -27,18 +28,18 @@ namespace DistributedWorkshop
 				using (var client = ctx.CreateRequestSocket()) 
 				{
 					client.Connect(serverUri);
-					while (true)
+					while (true) 
 					{
-					    var msg = "Hello";
-                        Console.WriteLine(msg);
-						client.Send (msg);
-					    var response = RunServer();
+						using (requestTimer.NewContext ())
+						{
+							client.Send("Hello", Encoding.UTF8,NetMQ.zmq.SendReceiveOptions.SendMore);
+						}
 					}
 				}
 			}
 		}
 
-		static string RunServer()
+		static void RunServer()
 		{
 			using (NetMQContext ctx = NetMQContext.Create()) 
 			{
@@ -50,10 +51,8 @@ namespace DistributedWorkshop
 					{
 						using (requestTimer.NewContext ())
 						{
-							var message = server.ReceiveString ();
+							var message = server.ReceiveString(Encoding.UTF8, NetMQ.zmq.SendReceiveOptions.SendMore);
 							Console.WriteLine (message);
-						    if (!string.IsNullOrWhiteSpace(message))
-						        return message;
 						}
 					}
 				}
