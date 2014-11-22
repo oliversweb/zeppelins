@@ -14,8 +14,7 @@ namespace DistributedWorkshop
 
         static void Main(string[] args)
         {
-			Metric.Config.WithHttpEndpoint ("http://localhost:12345" +
-				"/");
+			Metric.Config.WithHttpEndpoint("http://localhost:12345/");
 
 			//RunServer();
 			RunClient ("tcp://192.168.1.24:5556");
