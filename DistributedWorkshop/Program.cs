@@ -4,34 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NetMQ;
+using Metrics;
 
 namespace DistributedWorkshop
 {
     class Program
     {
+		private static readonly Timer requestTimer = Metric.Timer("Request Time",Unit.Requests);
+
         static void Main(string[] args)
         {
-            using (NetMQContext ctx = NetMQContext.Create())
-            {
-                using (var server = ctx.CreateResponseSocket())
-                {
-                    server.Bind("tcp://192.168.43.121:5556");
+			Metric.Config.WithHttpEndpoint ("http://localhost:12345/");
 
-                    using (var client = ctx.CreateRequestSocket())
-                    {
-                        client.Connect("tcp://192.168.43.23:5556");
-                        client.Send("Hello");
+			RunServer();
+			//RunClient ("tcp://192.168.43.45:5556");
+		}
 
-                        string m1 = server.ReceiveString();
-                        Console.WriteLine("From Client: {0}", m1);
-                        server.Send("Hi Back");
+		static void RunClient(string serverUri)
+		{
+			using (NetMQContext ctx = NetMQContext.Create())
+			{
+				using (var client = ctx.CreateRequestSocket()) 
+				{
+					client.Connect(serverUri);
+					while (true) 
+					{
+						client.Send ("Hello");
+					}
+				}
+			}
+		}
 
-                        string m2 = client.ReceiveString();
-                        Console.WriteLine("From Server: {0}", m2);
-                        Console.ReadLine();
-                    }
-                }
-            }
-        }
+		static void RunServer()
+		{
+			using (NetMQContext ctx = NetMQContext.Create()) 
+			{
+				using (var server = ctx.CreateResponseSocket()) 
+				{
+					server.Bind("tcp://0.0.0.0:5556");
+
+					while (true) 
+					{
+						using (requestTimer.NewContext ())
+						{
+							var message = server.ReceiveString ();
+							Console.WriteLine (message);
+						}
+					}
+				}
+			}
+		}
     }
 }
