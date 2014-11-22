@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NetMQ;
+using Metrics;
 
 namespace DistributedWorkshop
 {
     class Program
     {
+		private static readonly Timer requestTimer = Metric.Timer("Request Time",Unit.Requests);
+
         static void Main(string[] args)
         {
+			Metric.Config.WithHttpEndpoint ("http://localhost:12345/");
+
 			RunServer();
 			//RunClient ("tcp://192.168.43.45:5556");
 		}
@@ -36,12 +41,15 @@ namespace DistributedWorkshop
 			{
 				using (var server = ctx.CreateResponseSocket()) 
 				{
-					server.Bind("tcp://192.168.43.45:5556");
+					server.Bind("tcp://0.0.0.0:5556");
 
 					while (true) 
 					{
-						var message = server.ReceiveString();
-						Console.WriteLine(message);
+						using (requestTimer.NewContext ())
+						{
+							var message = server.ReceiveString ();
+							Console.WriteLine (message);
+						}
 					}
 				}
 			}
