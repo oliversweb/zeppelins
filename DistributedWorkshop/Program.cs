@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NetMQ;
 using Metrics;
+using Timer = Metrics.Timer;
 
 namespace DistributedWorkshop
 {
@@ -17,16 +19,18 @@ namespace DistributedWorkshop
 			Metric.Config.WithHttpEndpoint("http://localhost:12345/");
 
 			//RunServer();
-			RunClient ("tcp://192.168.1.24:5556");
+			//RunClient ("tcp://192.168.1.24:5556");
+			RunClient ("tcp://127.0.0.1:5556");
 		}
 
 		static void RunClient(string serverUri)
 		{
 			using (NetMQContext ctx = NetMQContext.Create())
 			{
-				using (var client = ctx.CreateRequestSocket()) 
+				using (var client = ctx.CreateDealerSocket()) 
 				{
 					client.Connect(serverUri);
+
 					while (true) 
 					{
 						using (requestTimer.NewContext ())
@@ -34,6 +38,7 @@ namespace DistributedWorkshop
 							client.Send("Hello", Encoding.UTF8,NetMQ.zmq.SendReceiveOptions.SendMore);
 						}
 					}
+                    //client.Send ("Hello");
 				}
 			}
 		}
@@ -50,8 +55,11 @@ namespace DistributedWorkshop
 					{
 						using (requestTimer.NewContext ())
 						{
-							var message = server.ReceiveString(Encoding.UTF8, NetMQ.zmq.SendReceiveOptions.SendMore);
-							Console.WriteLine (message);
+							//var message = server.ReceiveString(Encoding.UTF8, NetMQ.zmq.SendReceiveOptions.SendMore);
+							//Console.WriteLine (message);
+
+							var message = server.ReceiveString ();
+							server.Send("Our secret: Zepplins rule!");
 						}
 					}
 				}
