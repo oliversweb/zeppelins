@@ -1,20 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedWorkshop", "DistributedWorkshop\DistributedWorkshop.csproj", "{46FADE14-FFA6-4502-B741-9E3B5B911577}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4266819B-C43E-48A3-87E2-299DF6EB5991}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5C88AF79-63F3-47AF-9F2C-C85100BD9C66}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{28D5C13A-FB48-400A-8DF6-583810AF0501}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedWorkshop.Seeker", "DistributedWorkshop.Seeker\DistributedWorkshop.Seeker.csproj", "{38D42351-988B-4B9E-8639-BA68E8153FDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroMqHideAndSeek", "ZeroMqHideAndSeek\ZeroMqHideAndSeek.csproj", "{46DDE6C1-6E55-463B-A9B0-8C06894BD84B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,23 +20,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{28D5C13A-FB48-400A-8DF6-583810AF0501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28D5C13A-FB48-400A-8DF6-583810AF0501}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28D5C13A-FB48-400A-8DF6-583810AF0501}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28D5C13A-FB48-400A-8DF6-583810AF0501}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38D42351-988B-4B9E-8639-BA68E8153FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38D42351-988B-4B9E-8639-BA68E8153FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38D42351-988B-4B9E-8639-BA68E8153FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38D42351-988B-4B9E-8639-BA68E8153FDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46FADE14-FFA6-4502-B741-9E3B5B911577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46FADE14-FFA6-4502-B741-9E3B5B911577}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46FADE14-FFA6-4502-B741-9E3B5B911577}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46FADE14-FFA6-4502-B741-9E3B5B911577}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = DistributedWorkshop\DistributedWorkshop.csproj
+		{46DDE6C1-6E55-463B-A9B0-8C06894BD84B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46DDE6C1-6E55-463B-A9B0-8C06894BD84B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46DDE6C1-6E55-463B-A9B0-8C06894BD84B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46DDE6C1-6E55-463B-A9B0-8C06894BD84B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

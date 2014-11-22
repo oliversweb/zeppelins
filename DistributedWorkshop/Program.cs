@@ -20,8 +20,9 @@ namespace DistributedWorkshop
 
 			//RunServer();
 			//RunClient ("tcp://192.168.1.24:5556");
-			RunClient ("tcp://127.0.0.1:5556");
-		}
+			//RunClient ("tcp://127.0.0.1:5556");
+            LetsPlay();
+        }
 
 		static void RunClient(string serverUri)
 		{
@@ -42,6 +43,35 @@ namespace DistributedWorkshop
 				}
 			}
 		}
+
+        static void LetsPlay()
+        {
+            var responses = new Dictionary<string, string>();
+            const string ip = "tcp://192.168.43.{0}:5556";
+
+            using (var ctx = NetMQContext.Create())
+            {
+                using (var client = ctx.CreateDealerSocket())
+                {
+                    string newMessage = null;
+                    for (var i = 100; i < 256; i++)
+                    {
+                        var requestIp = string.Format(ip, i);
+                        client.Connect(requestIp);
+                        Console.WriteLine("Connecting to {0}", requestIp);
+                        var lastMessage = newMessage;
+                        newMessage = client.ReceiveString(TimeSpan.FromMilliseconds(50));
+                        if (string.IsNullOrWhiteSpace(newMessage))
+                            continue;
+                        Console.WriteLine(newMessage);
+                        if (lastMessage != newMessage)
+                            responses.Add(requestIp, newMessage);
+                    }
+
+                    responses.Count();
+                }
+            }
+        }
 
 		static void RunServer()
 		{
