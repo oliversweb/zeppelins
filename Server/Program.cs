@@ -29,7 +29,6 @@ namespace Server
                     Console.WriteLine("Server received message '{0}' from '{1}'", receivedMessage, endpoint);
 
                     server.Send(string.Format("Zepplins {0}", endpoint));
-                    Console.ReadLine();
                 }
             }
         }
