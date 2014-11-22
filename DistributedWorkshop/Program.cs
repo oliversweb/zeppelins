@@ -26,7 +26,7 @@ namespace DistributedWorkshop
 		{
 			using (NetMQContext ctx = NetMQContext.Create())
 			{
-				using (var client = ctx.CreateRequestSocket()) 
+				using (var client = ctx.CreateDealerSocket()) 
 				{
 					client.Connect(serverUri);
                     client.Send ("Hello");

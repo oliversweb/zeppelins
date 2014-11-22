@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NetMQ;
 using NetMQ.Sockets;
+using NetMQ.zmq;
 
 namespace Server
 {
