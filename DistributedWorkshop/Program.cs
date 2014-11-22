@@ -17,8 +17,8 @@ namespace DistributedWorkshop
 			Metric.Config.WithHttpEndpoint ("http://localhost:12345" +
 				"/");
 
-			//RunServer();
-			RunClient ("tcp://192.168.1.24:5556");
+			RunServer();
+			//RunClient("tcp://192.168.1.24:5556");
 		}
 
 		static void RunClient(string serverUri)
@@ -41,18 +41,19 @@ namespace DistributedWorkshop
 
 		static void RunServer()
 		{
-			using (NetMQContext ctx = NetMQContext.Create()) 
+            Console.WriteLine("Server waiting for connections ...");
+            using (NetMQContext ctx = NetMQContext.Create())
 			{
-				using (var server = ctx.CreateResponseSocket()) 
+                using (var server = ctx.CreateDealerSocket()) 
 				{
 					server.Bind("tcp://0.0.0.0:5556");
 
 					while (true) 
 					{
-						using (requestTimer.NewContext ())
+						using (requestTimer.NewContext())
 						{
-							var message = server.ReceiveString(Encoding.UTF8, NetMQ.zmq.SendReceiveOptions.SendMore);
-							Console.WriteLine (message);
+                            var message = server.ReceiveString(NetMQ.zmq.SendReceiveOptions.SendMore);
+							Console.WriteLine(message);
 						}
 					}
 				}
